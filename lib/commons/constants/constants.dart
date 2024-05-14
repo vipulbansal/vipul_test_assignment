@@ -1,6 +1,6 @@
 class Constants {
-  static String userTypeUser = 'user';
-  static String userTypeRestaurant = 'restaurant';
+  static String countries = '/countries';
+  static String states = '/states';
 
 
   static const String apiScheme = 'https';
