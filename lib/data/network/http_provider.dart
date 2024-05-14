@@ -77,7 +77,10 @@ class HttpProvider {
       url,
       queryParameters: parameters,
     );
-
+    headers.addAll({
+      'X-API-Key': Constants.apiKey,
+      'User-Agent': 'com.stagingcupid.api/10.16.6 (Release) Android/31',
+    });
     try {
       response = await _httpClient.get(
         uri,
