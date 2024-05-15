@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:vipul_test_assignment/commons/constants/constants.dart';
 import 'package:vipul_test_assignment/data/models/country_model.dart';
@@ -37,7 +38,9 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
       ));
       final response = await _countriesRepository.getAllCountries();
       emit(CountriesState.success(CountriesEventApiState.getCountries,
-          data: response, selectedCountryId: null, currentState: state));
+          data: response,
+          selectedCountryId: null,
+          currentState: state,));
     } catch (error) {
       emit(CountriesState.failure('Could not fetch countries',
           currentState: state));
@@ -50,13 +53,14 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   ) async {
     try {
       emit(CountriesState.loading(
+        selectedCountry: countrySelectedEvent.countryId,
         currentState: state,
       ));
       final response = await _statesRepository
           .getStatesForSelectedCountry("${Constants.countries}/"
               "${countrySelectedEvent.countryId}${Constants.states}");
       emit(CountriesState.success(CountriesEventApiState.getStates,
-          data: response,
+          statesData: response,
           selectedCountryId: countrySelectedEvent.countryId,
           currentState: state));
     } catch (error) {

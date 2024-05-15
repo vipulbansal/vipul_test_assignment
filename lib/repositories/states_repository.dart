@@ -18,6 +18,6 @@ class StatesRepository {
         'User-Agent': 'com.stagingcupid.api/10.16.6 (Release) Android/31',
       },
     );
-    return stateModelFromJson(response.data);
+    return stateModelFromJson(jsonEncode(response));
   }
 }

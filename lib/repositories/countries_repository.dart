@@ -17,6 +17,6 @@ class CountriesRepository {
       },
     );
 
-    return countryModelFromJson(response.data);
+    return countryModelFromJson(jsonEncode(response));
   }
 }
