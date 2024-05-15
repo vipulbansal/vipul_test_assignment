@@ -4,7 +4,7 @@ class Constants {
 
 
   static const String apiScheme = 'https';
-  static const String apiBaseUrl = 'api.stagingcupid.com/';
+  static const String apiBaseUrl = 'api.stagingcupid.com';
   static const String apiPath = 'api/v1/';
 
 

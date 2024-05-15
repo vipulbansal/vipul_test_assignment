@@ -1,13 +1,14 @@
 part of 'countries_bloc.dart';
 
 @immutable
-class CountriesState {
+class CountriesState extends Equatable {
   final dynamic apiState;
   final bool isSuccess;
   final bool isFailure;
   final String errorMessage;
   final bool isLoading;
-  final data;
+  final List countriesData;
+  final List statesData;
   final int? selectedCountryId;
 
   CountriesState({
@@ -16,7 +17,8 @@ class CountriesState {
     this.isFailure = false,
     this.errorMessage = '',
     this.isLoading = false,
-    this.data = '',
+    this.countriesData = const [],
+    this.statesData = const [],
     this.selectedCountryId,
   });
 
@@ -53,6 +55,7 @@ class CountriesState {
   factory CountriesState.success(apiState,
       {required int? selectedCountryId,
       data,
+      statesData,
       required CountriesState currentState}) {
     return currentState.copyWith(
         isSuccess: true,
@@ -60,7 +63,8 @@ class CountriesState {
         errorMessage: "",
         isLoading: false,
         apiState: apiState,
-        data: data,
+        countriesData: data,
+        statesData: statesData,
         selectedCountryId: selectedCountryId);
   }
 
@@ -70,7 +74,8 @@ class CountriesState {
     bool? isFailure,
     String? errorMessage,
     bool? isLoading,
-    var data,
+    var countriesData,
+    var statesData,
     int? selectedCountryId,
   }) {
     return CountriesState(
@@ -79,7 +84,8 @@ class CountriesState {
       isFailure: isFailure ?? this.isFailure,
       errorMessage: errorMessage ?? this.errorMessage,
       isLoading: isLoading ?? this.isLoading,
-      data: data ?? this.data,
+      countriesData: countriesData ?? this.countriesData,
+      statesData: statesData ?? this.statesData,
       selectedCountryId: selectedCountryId ?? this.selectedCountryId,
     );
   }
@@ -92,4 +98,17 @@ class CountriesState {
       errorMessage: $errorMessage
     }''';
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        apiState,
+        isSuccess,
+        isFailure,
+        errorMessage,
+        isLoading,
+        countriesData,
+        statesData,
+        selectedCountryId
+      ];
 }

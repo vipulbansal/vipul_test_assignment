@@ -9,9 +9,6 @@ final GlobalKey<NavigatorState> _rootNavigatorKey =
 final GlobalKey<NavigatorState> _userHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'home');
 
-const String userGuideScreen = '/userGuideScreen';
-const String askLoginTypeScreen = '/askLoginTypeScreen';
-
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -24,12 +21,7 @@ final GoRouter router = GoRouter(
         return const HomeScreen();
       },
     ),
-    GoRoute(
-      path: userGuideScreen,
-      builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen();
-      },
-    ),
+
 
   ],
 );

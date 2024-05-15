@@ -63,6 +63,7 @@ class AppTheme {
   static const Color veryLightGray = Color(0xFFF4F5F7);
   static const Color gray = Color(0xFF707070);
   static const Color grayBorderColor = Color(0x00000029);
+  static const Color colorAccent = Color(0xFF4EC2FF);
 
   static const Color navyBlue = Color(0xFF172B4D);
   static const Color navyBlue1 = Color(0xFF42526E);

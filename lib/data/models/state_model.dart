@@ -36,4 +36,9 @@ class StateModel {
     "id": id,
     "value": value,
   };
+
+  @override
+  String toString() {
+    return value;
+  }
 }

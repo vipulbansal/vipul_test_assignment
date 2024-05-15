@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vipul_test_assignment/commons/theme/app_theme.dart';
 
@@ -9,6 +8,7 @@ class CustomSpinner<T> extends StatefulWidget {
   final T? initialSelected;
   final String? hint;
   final String? topTitle;
+
 
   const CustomSpinner({
     super.key,
@@ -37,12 +37,21 @@ class _CustomSpinnerState<T> extends State<CustomSpinner> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (widget.initialSelected == null && widget.onForcedNull != null) {
-      _dropDownValue = null;
-      widget.onForcedNull!();
+  void didUpdateWidget(covariant CustomSpinner<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.allItems != oldWidget.allItems) {
+      // Resets the dropdown when items list changes
+      setState(() {
+        _dropDownValue = null;
+      });
+      if (widget.onForcedNull != null) {
+        widget.onForcedNull!();
+      }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,7 +62,7 @@ class _CustomSpinnerState<T> extends State<CustomSpinner> {
                   fontSize: 10,
                 ),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
         ],
         Container(
           decoration: BoxDecoration(
@@ -66,7 +75,7 @@ class _CustomSpinnerState<T> extends State<CustomSpinner> {
           ),
           child: DropdownButton<T>(
             isDense: true,
-            padding: EdgeInsets.fromLTRB(16, 6, 4, 6),
+            padding: const EdgeInsets.fromLTRB(16, 6, 4, 6),
             underline: Container(),
             iconEnabledColor: AppThemeManager.appPrimaryColor,
             hint: Text(

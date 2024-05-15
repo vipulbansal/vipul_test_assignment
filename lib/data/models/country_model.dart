@@ -36,4 +36,9 @@ class CountryModel {
     "id": id,
     "value": value,
   };
+
+  @override
+  String toString() {
+    return value;
+  }
 }
