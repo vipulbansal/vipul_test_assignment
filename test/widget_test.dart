@@ -1,30 +1,61 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vipul_test_assignment/blocs/countries_bloc/countries_bloc.dart';
+import 'package:vipul_test_assignment/presentation/screens/home_screen.dart';
+import 'package:vipul_test_assignment/presentation/widgets/spinner_with_title.dart';
 
-import 'package:vipul_test_assignment/main.dart';
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+class MockCountriesBloc extends MockBloc<CountriesEvent, CountriesState> implements CountriesBloc {
+  @override
+  // Provide a non-null default state
+  CountriesState get state => super.state;
+}
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+void main() async{
+  group('HomeScreen Tests', () {
+    late MockCountriesBloc mockCountriesBloc;
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    setUp(() {
+      mockCountriesBloc = MockCountriesBloc();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      whenListen(
+          mockCountriesBloc,
+          Stream.fromIterable([
+            CountriesState(
+              countriesData: [], // Mock data
+              statesData: [], // Mock data
+              isLoading: false,
+              isFailure: false,
+              errorMessage: '',
+            )
+          ]),
+          initialState: CountriesState(
+            countriesData: [], // Mock data
+            statesData: [], // Mock data
+            isLoading: false,
+            isFailure: false,
+            errorMessage: '',
+          )
+      );
+    });
+
+    Widget createWidgetUnderTest() {
+      return MaterialApp(
+        home: BlocProvider<CountriesBloc>(
+          create: (_) => mockCountriesBloc,
+          child: const HomeScreen(),
+        ),
+      );
+    }
+
+    testWidgets('ensures two CustomSpinner widgets are present', (WidgetTester tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      final customSpinnerFinder = find.byType(CustomSpinner);
+      expect(customSpinnerFinder, findsNWidgets(2));
+    });
   });
 }
