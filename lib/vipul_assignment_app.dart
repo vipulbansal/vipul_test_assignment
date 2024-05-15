@@ -6,6 +6,12 @@ import 'package:vipul_test_assignment/presentation/widgets/loading_spinner.dart'
 import 'package:vipul_test_assignment/services/route_service.dart';
 import 'package:vipul_test_assignment/wrappers/dismiss_keyboard.dart';
 
+import 'commons/helpers/theme_helper.dart';
+import 'commons/theme/app_theme.dart';
+
+final themeHelper = ThemeHelper();
+bool isDarkMode = false;
+
 class VipulAssignmentApp extends StatelessWidget {
   const VipulAssignmentApp({super.key});
 
@@ -26,20 +32,39 @@ class VipulAssignmentApp extends StatelessWidget {
             return countriesBloc..add(LoadCountries());
           })
         ],
-        child: MaterialApp.router(
-          routerConfig: router,
-          debugShowCheckedModeBanner: false,
-          builder: (context, child) {
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(),
-              child: LoadingSpinner(
-                opacity: 0.25,
-                child: child,
-              ),
-            );
-          },
-
-        ),
+        child: StreamBuilder<ThemeMode>(
+            stream: themeHelper.themeStream,
+            initialData: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            builder: (context, snapshot) {
+              return MaterialApp.router(
+                routerConfig: router,
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  scaffoldBackgroundColor: AppThemeManager.primaryBGColor,
+                  primarySwatch: AppThemeManager.appPrimaryColor,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  brightness: Brightness.light,
+                  useMaterial3: false,
+                ),
+                darkTheme: ThemeData(
+                  scaffoldBackgroundColor: AppThemeManager.primaryBGColor,
+                  primarySwatch: AppThemeManager.appPrimaryColor,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  brightness: Brightness.dark,
+                  useMaterial3: false,
+                ),
+                themeMode: snapshot.data,
+                builder: (context, child) {
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(),
+                    child: LoadingSpinner(
+                      opacity: 0.25,
+                      child: child,
+                    ),
+                  );
+                },
+              );
+            }),
       ),
     );
   }
